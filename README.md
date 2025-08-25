@@ -1,11 +1,10 @@
+## How to Set Up Cloudflare WARP VPN on Ubuntu (No Zero Trust)
 
-## 🚀 How to Set Up Cloudflare WARP VPN on Ubuntu (No Zero Trust)
-
-### ✅ Tested on: Ubuntu 22.04+ (also works on 20.04)
+### Tested on: Ubuntu 22.04+ (also works on 20.04)
 
 ---
 
-### 🧩 Step 1: Install the WARP client
+### Step 1: Install the WARP client
 
 ```bash
 curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
@@ -18,7 +17,7 @@ sudo apt install cloudflare-warp
 
 ---
 
-### 🛠 Step 2: Fix DNS (most networks break WARP registration)
+### Step 2: Fix DNS (most networks break WARP registration)
 
 #### Set Cloudflare DNS (system-wide) to avoid hijacked DNS:
 
@@ -27,6 +26,7 @@ nmcli connection show  # Find your connection name (e.g., "Wi-Fi" or "KIIT-WIFI-
 ```
 
 Then run:
+
 ```bash
 sudo nmcli connection modify "YOUR_CONNECTION_NAME" ipv4.ignore-auto-dns yes
 sudo nmcli connection modify "YOUR_CONNECTION_NAME" ipv4.dns "1.1.1.1 1.0.0.1"
@@ -34,17 +34,20 @@ sudo nmcli connection down "YOUR_CONNECTION_NAME" && sudo nmcli connection up "Y
 ```
 
 Confirm DNS is correct:
+
 ```bash
 resolvectl status
 ```
+
 Make sure it shows only:
+
 ```
 DNS Servers: 1.1.1.1 1.0.0.1
 ```
 
 ---
 
-### ⚙️ Step 3: Set WARP mode (optional, but recommended)
+### Step 3: Set WARP mode (optional, but recommended)
 
 ```bash
 warp-cli set-mode warp
@@ -54,7 +57,7 @@ This avoids using Zero Trust / Teams.
 
 ---
 
-### 📝 Step 4: Register the client
+### Step 4: Register the client
 
 ```bash
 warp-cli registration new
@@ -64,31 +67,32 @@ warp-cli registration new
 
 ---
 
-### 🔌 Step 5: Connect to WARP VPN
+### Step 5: Connect to WARP VPN
 
 ```bash
 warp-cli connect
 ```
 
 Check status:
+
 ```bash
 warp-cli status
 ```
 
 ---
 
-### 🔁 Future Usage (Quick Commands)
+### Future Usage (Quick Commands)
 
-| Action         | Command                    |
-|----------------|----------------------------|
-| Connect VPN    | `warp-cli connect`         |
-| Disconnect VPN | `warp-cli disconnect`      |
-| Status         | `warp-cli status`          |
+| Action         | Command                           |
+| -------------- | --------------------------------- |
+| Connect VPN    | `warp-cli connect`                |
+| Disconnect VPN | `warp-cli disconnect`             |
+| Status         | `warp-cli status`                 |
 | Restart daemon | `sudo systemctl restart warp-svc` |
 
 ---
 
-### 🧼 Optional: Auto-connect on boot (if needed)
+### Optional: Auto-connect on boot (if needed)
 
 ```bash
 sudo systemctl enable warp-svc
@@ -96,9 +100,10 @@ sudo systemctl enable warp-svc
 
 ---
 
-### 💡 Tip: Avoid Zero Trust / Teams
+### Tip: Avoid Zero Trust / Teams
 
 If the app ever says you're being routed through “Zero Trust” or asks for an organization domain, run:
+
 ```bash
 warp-cli set-mode warp
 ```
