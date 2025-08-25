@@ -111,3 +111,41 @@ warp-cli set-mode warp
 That switches you to regular WARP VPN (no login needed after registration).
 
 ---
+### 🔧 Fix (If You Have Errors)
+
+1. **Edit the repo file** you created:
+
+```bash
+sudo nano /etc/apt/sources.list.d/cloudflare-client.list
+```
+
+2. Change this line:
+
+```
+deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ plucky main
+```
+
+⬇️ Replace `plucky` with `jammy`:
+
+```
+deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ jammy main
+```
+
+3. Save (`CTRL+O`, `Enter`, `CTRL+X`) and then run:
+
+```bash
+sudo apt update
+sudo apt install cloudflare-warp -y
+```
+
+4. Verify:
+
+```bash
+warp-cli --version
+```
+
+---
+
+💡 This is a common trick: when a new Ubuntu version comes out, some vendors don’t update repos immediately, but packages from the previous LTS (jammy = 22.04) usually work fine.
+
+---
